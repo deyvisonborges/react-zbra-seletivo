@@ -1,12 +1,5 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -14,14 +7,6 @@
   -webkit-text-size-adjust: 100%;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
 
 body {
   margin: 0;
@@ -29,41 +14,56 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+
+  background-color: #101010;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.form-control {
+  display: flex;
+  height: fit-content;
+  max-width: 432px;
+  position: relative;
+  width: 100%;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.input {
+  background: transparent;
+  border: 1px solid #C0C0C0;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 20px;
+  outline: none;
+  padding: 1rem 64px 1rem 1rem;
+  position: relative;
+  width: 100%;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.input:active, :focus-visible {
+  background: transparent;
+}
+
+.input::placeholder {
+  color: #686562;
+}
+
+.input.error {
+  border: 1px solid #FF5858;
+}
+
+.input.success {
+  border: 1px solid #6FFF58;
+}
+
+.label {
+  color: #ffffff;
+}
+
+.form_errors, .form_errors ul {
+  display: flex;
+  flex-direction: column;
+}
+.form_errors ul li {
+  color: #FF5858;
+  align-self: flex-start;
 }

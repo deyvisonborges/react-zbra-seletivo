@@ -1,30 +1,92 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { assets } from './assets/assets-links'
+import { useForm } from './hooks/useForm'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { data, errors, handleChange, handleSubmit } = useForm<{
+    name: string
+    email: string
+    password: string
+  }>({
+    validations: {
+      name: [
+        {
+          condition: (value) => value.length <= 0,
+          message: 'Campo obrigatório'
+        }
+      ]
+    }
+  })
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
+      <img alt="logo zbra" src={assets.images.logoImage} />
+      <h1>Valide sua senha</h1>
+
+      <form onSubmit={handleSubmit}>
+        <div className="form__control">
+          <label className="label" htmlFor="name">
+            Nome
+          </label>
+          <input
+            id="name"
+            className={`input ${errors.name ? 'error' : ''}`}
+            name="name"
+            type="text"
+            placeholder="Nome"
+            onChange={handleChange('name')}
+            value={data.name}
+          />
+          {errors.name && (
+            <div className="form_errors">
+              <ul>
+                {errors.name.map((n) => (
+                  <li key={n}>{n}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        <div className="form__control">
+          <label className="label" htmlFor="emmail">
+            E-mail
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="text"
+            placeholder="E-mail"
+            onChange={handleChange('email')}
+            value={data.email}
+          />
+
+          {errors.email && (
+            <div className="form_errors">
+              <span>Senha inválida</span>
+              <ul>
+                {errors.email.map((e) => (
+                  <li>{e}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        <div className="form__control">
+          <label htmlFor="password">Senha</label>
+          <input
+            id="password"
+            name="password"
+            type="text"
+            placeholder="Senha"
+            onChange={handleChange('password')}
+            value={data.password}
+          />
+        </div>
+
+        <button type="submit">Validar</button>
+      </form>
     </>
   )
 }
