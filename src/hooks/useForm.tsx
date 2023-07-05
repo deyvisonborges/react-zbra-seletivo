@@ -22,13 +22,18 @@ export const useForm = <T extends Record<string, any>>(options?: {
   )
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
-  const handleChange = (key: keyof T) => (e: ChangeEvent<HTMLInputElement>) => {
-    e.persist()
-    setData({
-      ...data,
-      [key]: e.target.value
-    })
-  }
+  const handleChange =
+    (field: keyof T, sanitizeFn?: (value: string) => string) =>
+    (e: ChangeEvent<HTMLInputElement>) => {
+      e.persist()
+
+      const value = sanitizeFn ? sanitizeFn(e.target.value) : e.target.value
+
+      setData({
+        ...data,
+        [field]: value
+      })
+    }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
