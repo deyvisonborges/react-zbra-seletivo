@@ -5,6 +5,8 @@ import { FormField } from './interfaces/FormField'
 import { nameValidations } from './validations/nameValidations'
 import { emailValidations } from './validations/emailValidations'
 import { passwordValidations } from './validations/passwordValidations'
+import { onlyText } from './validations/utils/sanitizers/onlyText'
+import { onlyNumbers } from './validations/utils/sanitizers/onlyNumber'
 
 function App() {
   const { data, errors, validated, handleChange, handleSubmit, isSubmitting } =
@@ -90,7 +92,8 @@ function App() {
                 name="name"
                 type="text"
                 placeholder="Nome"
-                onChange={handleChange('name')}
+                onChange={handleChange('name', onlyText)}
+                value={data.name || ''}
                 className={`input 
                   ${errors.name ? 'error' : ''}
                   ${inputNameIsValid ? 'success' : ''}                  
@@ -161,7 +164,8 @@ function App() {
                 name="password"
                 type="text"
                 placeholder="Senha"
-                onChange={handleChange('password')}
+                onChange={handleChange('password', onlyNumbers)}
+                value={data.password || ''}
                 className={`input 
                   ${errors.password ? 'error' : ''}
                   ${inputPasswordIsValid ? 'success' : ''}                  
