@@ -1,67 +1,81 @@
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ChangeEvent, FormEvent, useState } from 'react'
 
-/* eslint-disable no-prototype-builtins */
 export type FieldValidation = {
   condition: (value: string) => boolean
   message: string
 }[]
 
-type ErroRecord<T extends {}> = Record<
-  keyof Record<keyof T, string[]>,
-  string[]
->
+type ErroRecord<T> = Record<keyof T, string[]>
+type ValidatedRecord<T> = Record<keyof T, { valid: boolean }>
 
-export const useForm = <TFields extends Record<string, unknown>>(options?: {
-  initialValues?: Partial<TFields>
-  validations?: Partial<Record<keyof TFields, FieldValidation>>
+export const useForm = <T extends Record<string, any>>(options?: {
+  initialValues?: Partial<T>
+  validations?: Partial<Record<keyof T, FieldValidation>>
+  onSubmit?: () => void
 }) => {
-  const [data, setData] = useState(options?.initialValues || ({} as TFields))
-  const [errors, setErrors] = useState<ErroRecord<TFields>>(
-    {} as ErroRecord<TFields>
+  const [data, setData] = useState<T>((options?.initialValues || {}) as T)
+  const [errors, setErrors] = useState<ErroRecord<T>>({} as ErroRecord<T>)
+  const [validated, setValidated] = useState<ValidatedRecord<T>>(
+    {} as ValidatedRecord<T>
   )
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
-  const handleChange =
-    (key: keyof TFields) => (e: ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.target
-      setData((prev) => ({ ...prev, [key]: value }))
-    }
+  const handleChange = (key: keyof T) => (e: ChangeEvent<HTMLInputElement>) => {
+    e.persist()
+    setData({
+      ...data,
+      [key]: e.target.value
+    })
+  }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const fieldsErrors: ErroRecord<TFields> = {} as ErroRecord<TFields>
+    const validations = options?.validations
 
-    for (const field in options?.validations) {
-      if (options.validations.hasOwnProperty(field)) {
-        const fieldValidations = options.validations[field]
+    setErrors({} as ErroRecord<T>)
+    setValidated({} as ValidatedRecord<T>)
+
+    if (validations) {
+      for (const field in validations) {
         const fieldValue = String(data[field]) ?? ''
-        let fieldErrors: string[] = []
 
-        for (const validation of fieldValidations!) {
-          const { condition, message } = validation
+        if (validations[field]) {
+          let fieldErrors: string[] = [] // Move a linha para dentro deste bloco
 
-          if (condition(fieldValue) && fieldErrors.indexOf(message) === -1) {
-            fieldErrors.push(message)
-          } else {
-            fieldErrors = fieldErrors.filter((error) => error !== message)
+          for (const validation of validations[field]!) {
+            const { condition, message } = validation
+
+            if (condition(fieldValue) && fieldErrors.indexOf(message) === -1) {
+              fieldErrors.push(message)
+            } else {
+              fieldErrors = fieldErrors.filter((error) => error !== message)
+            }
           }
-        }
 
-        if (fieldErrors.length > 0) {
-          fieldsErrors[field] = fieldErrors
+          if (fieldErrors.length > 0) {
+            setValidated((prev) => ({ ...prev, [field]: { valid: false } }))
+            setErrors((prevErrors) => ({ ...prevErrors, [field]: fieldErrors }))
+          }
+          setValidated((prev) => ({ ...prev, [field]: { valid: true } }))
         }
       }
+    }
 
-      if (fieldsErrors) {
-        setErrors((prev) => ({ ...prev, ...fieldsErrors }))
-        return
-      } else {
-        setErrors({} as ErroRecord<TFields>)
-      }
+    if (options?.onSubmit) {
+      options.onSubmit()
     }
   }
 
-  return { handleSubmit, handleChange, data, errors }
+  return {
+    handleSubmit,
+    handleChange,
+    setIsSubmitting,
+    data,
+    errors,
+    isSubmitting,
+    validated
+  }
 }
