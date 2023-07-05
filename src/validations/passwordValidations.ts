@@ -1,5 +1,5 @@
 import { createFieldValidations } from './utils/createFieldValidations'
-import { hasAdjacent } from './utils/hasAdjacent'
+import { validateHasAdjacent } from './utils/validators/validateHasAdjacent'
 import { validateOrdenation } from './utils/validators/validateOrdenation'
 import { validatePasswordRange } from './utils/validators/validatePasswordRange'
 
@@ -13,7 +13,7 @@ export const passwordValidations = createFieldValidations([
     message: 'A senha deve conter 6 dígitos'
   },
   {
-    condition: (value) => !hasAdjacent(Number(value)),
+    condition: (value) => !validateHasAdjacent(Number(value)),
     message: 'Senha deve conter 2 dígitos adjacentes iguais'
   },
   {

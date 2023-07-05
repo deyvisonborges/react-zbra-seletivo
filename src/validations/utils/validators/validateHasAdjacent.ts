@@ -1,4 +1,4 @@
-export function hasAdjacent(value: number): boolean {
+export function validateHasAdjacent(value: number): boolean {
   const digits = String(value)
 
   for (let i = 0; i < digits.length - 1; i++) {

@@ -9,8 +9,8 @@
 </h3>
 
 <p align="center">
-  :video_camera: Application using React, Vite and TypeScript.
-  Unitary tests with vitest.
+  :video_camera: Aplicação utilizando React, Vite e TypeScript.
+  Testes de unidade com Vitest
 </p>
 
 <p align="center">
@@ -25,35 +25,64 @@
 </p>
 
 <p align="center">
-  <a href="#computer-demo">Demo</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#wrench-install-and-run">Install and run</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#memo-license">License</a>
+  <a href="#computer-demo">Demonstração</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="#wrench-install-and-run">Instalação e execução</a>&nbsp;&nbsp;&nbsp;
 </p>
 
-## :computer: Demo
+## :computer: Demonstração
 
 <p align="center">
   <img src="https://i.imgur.com/4fVyUK2.png" alt="Demo" />
 </p>
 
-## :wrench: Install and run
+## :wrench: Instalação e execução
 
-Open terminal:
+Em seu terminal:
 
 ```sh
-# Clone this repo
+# Clone este repositório
 git clone https://github.com/deyvisonborges/react-zbra-seletivo
 
-# Entry in folder
+# Entre na pasta
 cd react-zbra-seletivo
 
-# Install deps with npm
+# Instale as dependências com npm
 npm install
 
-# Launch the app with npm or yarn
+# Inicie a aplicação com npm
 npm run dev 
 
-# Run tests
+# Pra executar os testes
 npm run test
 ```
+
+## Descrição da solução
+**Na construção da aplicação:**
+- Utilizei o **React**
+- Utilizei o **CSS** tradicional
+- Utilizei o **Vite.js** como ferramenta de toolings
+- Utilizei **Typescript** para garantir qualidade de código
+- Adicionei ferramentas de testes estáticos como Prettier e Eslint
+- Adicionei o **Husky** e o **Lint Staged** para garantir que os commits só vão ser aceitos se o código estiver validado localmente
+ 
+**Na definição de estilos:**
+- Normalizei o css de forma exunta para atender o projeto
+- Defini as cores do tema como variáveis css
+- Criei estilizações no modelo css functions, tanto para os componentes quanto na estruturação
+- Adicionei suporte a dois tipos de tipografia
+  - Uma para os titulos
+  - Outra para os textos corridos (parágrafos)
+
+  As fonts são inseridas via embeded link pelo Google Fonts (solução mais rápida e prática)
+
+**Na validação dos inputs e submissão dos dados:**
+- Invés de instalar uma biblioteca de validação de formulários, construi uma solução do zero baseada em hooks, para atender a demanda solicitada.
+
+Com essa abordagem é possível ter total controle sobre a validação enquanto digita e enquanto submete os dados.
+- Criei "sanitizers" para os inpunts:
+  - No input de nome exemplo, só é permitido, enquanto digita, passar caracteres e não números.
+  - No input de senha, enquanto digita, passar somente números.
+- Criei funções para validar os dados de acordo com cada requisito solicitado
+- Para cada input, de forma isolada, é possível adicionar novas regras de validação, assim como remover alguma já existente, isso sem afertar em nada no código como um todo
 ---
 
 <p align="center">
