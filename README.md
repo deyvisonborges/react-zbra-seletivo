@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://raw.githubusercontent.com/zbra-repos/deyvisonborges_2023-07-03/e3da50490751183e3c6d5763a1d29773739c25d3/instructions/images/zbra-brand.svg?token=AIPELNXOIEU4RHKBN2Q4NX3EUXGTA"
+  <img src="https://i.imgur.com/RABlBpk.png"
   width="200px"
   alt="Logo" />
 </h1>
