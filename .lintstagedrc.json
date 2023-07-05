@@ -1,0 +1,4 @@
+{
+  "*.{js,cjs,ts,tsx}": ["npm run code:check"],
+  "src/**/*.{js,cjs,ts,tsx}": ["npm run code:check"]
+}
