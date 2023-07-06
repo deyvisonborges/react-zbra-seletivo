@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest'
 import { validatePasswordRange } from '../../../../src/validations/utils/validators/validatePasswordRange'
 
-describe('validatePasswordRange', () => {
+describe('validator / validatePasswordRange', () => {
   test('should return true if password is within the range', () => {
     const result = validatePasswordRange(500000)
     expect(result).toBe(true)

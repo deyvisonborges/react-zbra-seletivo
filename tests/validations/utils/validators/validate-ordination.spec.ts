@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest'
 import { validateOrdination } from '../../../../src/validations/utils/validators/validateOrdination'
 
-describe('validateOrdination', () => {
+describe('validator / validateOrdination', () => {
   test('should return true if string is in ascending order', () => {
     const result = validateOrdination('123456')
     expect(result).toBe(true)
