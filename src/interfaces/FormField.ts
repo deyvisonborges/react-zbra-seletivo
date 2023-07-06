@@ -1,4 +1,4 @@
-export interface FormField {
+export type FormField = {
   name: string
   email: string
   password: string

@@ -43,6 +43,8 @@ export const useForm = <T extends Record<string, any>>(options?: {
     setErrors({} as ErroRecord<T>)
     setValidated({} as ValidatedRecord<T>)
 
+    let hasErrors = false
+
     if (validations) {
       for (const field in validations) {
         const fieldValue = String(data[field]) ?? ''
@@ -61,6 +63,7 @@ export const useForm = <T extends Record<string, any>>(options?: {
           }
 
           if (fieldErrors.length > 0) {
+            hasErrors = true
             setValidated((prev) => ({ ...prev, [field]: { valid: false } }))
             setErrors((prevErrors) => ({ ...prevErrors, [field]: fieldErrors }))
           }
@@ -69,7 +72,7 @@ export const useForm = <T extends Record<string, any>>(options?: {
       }
     }
 
-    if (options?.onSubmit) {
+    if (!hasErrors && options?.onSubmit) {
       options.onSubmit()
     }
   }

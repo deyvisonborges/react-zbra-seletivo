@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { assets } from './assets/assets-links'
 import { useForm } from './hooks/useForm'
 import { FormField } from './interfaces/FormField'
@@ -7,25 +7,70 @@ import { emailValidations } from './validations/emailValidations'
 import { passwordValidations } from './validations/passwordValidations'
 import { onlyText } from './validations/utils/sanitizers/onlyText'
 import { onlyNumbers } from './validations/utils/sanitizers/onlyNumber'
+import { endpoints } from './integrations/endpoints'
+import { SubmitFeedback } from './interfaces/SubmitFeedback'
 
 function App() {
-  const { data, errors, validated, handleChange, handleSubmit, isSubmitting } =
-    useForm<FormField>({
-      initialValues: {
-        name: '',
-        email: '',
-        password: ''
-      },
-      validations: {
-        name: nameValidations,
-        email: emailValidations,
-        password: passwordValidations
+  const [submitFeedback, setSubmitFeedback] = useState<SubmitFeedback>(
+    {} as SubmitFeedback
+  )
+  const {
+    data,
+    errors,
+    validated,
+    isSubmitting,
+    handleChange,
+    handleSubmit,
+    setIsSubmitting
+  } = useForm<FormField>({
+    initialValues: {
+      name: '',
+      email: '',
+      password: ''
+    },
+    validations: {
+      name: nameValidations,
+      email: emailValidations,
+      password: passwordValidations
+    },
+    onSubmit: async () => {
+      try {
+        setSubmitFeedback({} as SubmitFeedback)
+        setIsSubmitting(true)
+        const res = await fetch(endpoints.serviceDefault, {
+          method: 'POST',
+          body: JSON.stringify(data)
+        })
+        if ([400, 401, 403, 404, 500].includes(res.status)) {
+          setIsSubmitting(false)
+          setSubmitFeedback({
+            status: 'error',
+            message: 'Falha ao enviar resultado. Tente novamente.'
+          })
+          setTimeout(() => setSubmitFeedback({} as SubmitFeedback), 3000)
+          return
+        }
+        setSubmitFeedback({
+          status: 'success',
+          message: 'Resultado enviado com sucesso'
+        })
+      } finally {
+        setIsSubmitting(false)
       }
-    })
+    }
+  })
 
   const isAllFieldsEmpty = Object.values(data).every(
     (fieldValue) => fieldValue === ''
   )
+
+  // derived states
+  const inputNameIsValid =
+    !isSubmitting && !errors.name && validated.name?.valid
+  const inputEmailIsValid =
+    !isSubmitting && !errors.email && validated.email?.valid
+  const inputPasswordIsValid =
+    !isSubmitting && !errors.password && validated.password?.valid
 
   const renderNameErrors = useMemo(
     () =>
@@ -69,11 +114,6 @@ function App() {
       ),
     [errors.password]
   )
-
-  // derived states
-  const inputNameIsValid = !errors.name && validated.name?.valid
-  const inputEmailIsValid = !errors.email && validated.email?.valid
-  const inputPasswordIsValid = !errors.password && validated.password?.valid
 
   return (
     <div className="container">
@@ -194,12 +234,17 @@ function App() {
             <button
               className="button"
               type="submit"
-              {...(isAllFieldsEmpty && { disabled: true })}
+              {...((isAllFieldsEmpty || isSubmitting) && { disabled: true })}
             >
-              Validar
+              {isSubmitting ? <i className="animation-spinner"></i> : 'Validar'}
             </button>
           </div>
         </form>
+        {!!setSubmitFeedback && (
+          <p className={`text-${submitFeedback.status}`}>
+            {submitFeedback.message}
+          </p>
+        )}
       </div>
     </div>
   )
