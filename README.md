@@ -61,6 +61,7 @@ npm run test
 - Utilizei o **CSS** tradicional
 - Utilizei o **Vite.js** como ferramenta de toolings
 - Utilizei **Typescript** para garantir qualidade de código
+- Utilizei o **Vitest** para fazer alguns testes de unidade
 - Adicionei ferramentas de testes estáticos como Prettier e Eslint
 - Adicionei o **Husky** e o **Lint Staged** para garantir que os commits só vão ser aceitos se o código estiver validado localmente
  
