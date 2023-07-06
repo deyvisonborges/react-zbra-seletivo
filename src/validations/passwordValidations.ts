@@ -1,6 +1,6 @@
 import { createFieldValidations } from './utils/createFieldValidations'
 import { validateHasAdjacent } from './utils/validators/validateHasAdjacent'
-import { validateOrdenation } from './utils/validators/validateOrdenation'
+import { validateOrdination } from './utils/validators/validateOrdination'
 import { validatePasswordRange } from './utils/validators/validatePasswordRange'
 
 export const passwordValidations = createFieldValidations([
@@ -17,7 +17,7 @@ export const passwordValidations = createFieldValidations([
     message: 'Senha deve conter 2 dígitos adjacentes iguais'
   },
   {
-    condition: (value) => !validateOrdenation(value),
+    condition: (value) => !validateOrdination(value),
     message:
       'A senha deve conter dígitos numa sequência crescrente ou do mesmo valor'
   },
