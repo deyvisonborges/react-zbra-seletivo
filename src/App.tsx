@@ -9,6 +9,7 @@ import { onlyText } from './validations/utils/sanitizers/onlyText'
 import { onlyNumbers } from './validations/utils/sanitizers/onlyNumber'
 import { endpoints } from './integrations/endpoints'
 import { SubmitFeedback } from './interfaces/SubmitFeedback'
+import { Input } from './components/Input'
 
 function App() {
   const [submitFeedback, setSubmitFeedback] = useState<SubmitFeedback>(
@@ -123,40 +124,14 @@ function App() {
 
         <form onSubmit={handleSubmit}>
           <div className="form-control">
-            <div className="form-field">
-              <label className="label" htmlFor="name">
-                Nome
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Nome"
-                onChange={handleChange('name', onlyText)}
-                value={data.name || ''}
-                className={`input 
-                  ${errors.name ? 'error' : ''}
-                  ${inputNameIsValid ? 'success' : ''}                  
-                `}
-                {...(isSubmitting && { disabled: true })}
-              />
-              {errors.name && (
-                <img
-                  className="input--icon"
-                  src={assets.svgs.errorSvg}
-                  alt=""
-                />
-              )}
-
-              {inputNameIsValid && (
-                <img
-                  className="input--icon"
-                  src={assets.svgs.successSvg}
-                  alt=""
-                />
-              )}
-            </div>
-            {renderNameErrors}
+            <Input
+              id="name"
+              errors={errors.name}
+              isSubmiting={isSubmitting}
+              isValid={inputNameIsValid}
+              onChange={handleChange('name', onlyText)}
+              value={data.name}
+            />
           </div>
 
           <div className="form-control">
